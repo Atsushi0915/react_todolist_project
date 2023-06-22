@@ -3,22 +3,33 @@ import "./styles.css"
 
 export const App = () => {
   const [todoText, setTodoText] = useState('');
-  const [incpmpleteTodos, setIncompleteTodos] = useState(['あああああああ', 'いいいいいいい']);
+  const [incompleteTodos, setIncompleteTodos] = useState(['あああああああ', 'いいいいいいい']);
   const [completeTodos, setCompleteTodos] = useState(['ううううううう'])
 
   const onChangeTodoText = (e) => setTodoText(e.target.value)
   const onClickAdd = () => {
     if (todoText === '') return;
-    const newTodos = [...incpmpleteTodos, todoText];
+    const newTodos = [...incompleteTodos, todoText];
     setIncompleteTodos(newTodos);
     setTodoText('');
   };
 
   const onClickDelete = (index) => {
-    const newTodos = [...incpmpleteTodos];
+    const newTodos = [...incompleteTodos];
     newTodos.splice(index, 1);
     setIncompleteTodos(newTodos);
   };
+
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompleteTodos];
+    newIncompleteTodos.splice(index, 1)
+
+    const newCompleteTodos = [...completeTodos, incompleteTodos[index]];
+    console.log(newCompleteTodos);
+    setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newCompleteTodos);
+    console.log(completeTodos);
+  }
 
   return (
     <>
@@ -29,11 +40,11 @@ export const App = () => {
       <div className="incomplete-area">
         <p className="title">未完了のTODO</p>
         <ul>
-          {incpmpleteTodos.map((todo, index) => {
+          {incompleteTodos.map((todo, index) => {
             return(
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>完了</button>
+                <button onClick={() => onClickComplete(index)}>完了</button>
                 <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             )
@@ -46,9 +57,8 @@ export const App = () => {
             {completeTodos.map((todo) => {
               return(
                 <div key={todo} className="list-row">
-                  <li>うううううう</li>
-                  <button>完了</button>
-                  <button>削除</button>
+                  <li>{todo}</li>
+                  <button>戻す</button>
                 </div>
               )
             })} 
